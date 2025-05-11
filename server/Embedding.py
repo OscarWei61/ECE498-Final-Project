@@ -8,7 +8,7 @@ import lzma
 from tqdm import tqdm
 from openai import OpenAI
 
-openai_client = OpenAI(api_key="")
+openai_client = OpenAI(api_key="enter your api key")
 
 
 def chromaDB_initialize():
