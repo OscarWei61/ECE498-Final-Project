@@ -1,5 +1,6 @@
 from Embedding import chromaDB_initialize, embedding_generate, retrieve_advices
-from fastapi import APIRouter, Query
+from rag_engine import generate_structured_answer, TaskType
+from fastapi import APIRouter, Query, Body
 from fastapi.responses import JSONResponse
 from enum import Enum
 from typing import List
@@ -27,3 +28,14 @@ def receive_query(
     # most_relevant_document = retrieve_advices(input_string)
     
     return JSONResponse(content={"result": output_string})
+
+
+@router.post("/generate_answer")
+def generate_full_answer(
+    task: List[TaskType] = Body(..., description="Tasks to perform"),
+    input_string: str = Body(..., description="User's legal question")
+):
+    result = generate_structured_answer(task, input_string)
+    return JSONResponse(content={"answer": result})
+
+
