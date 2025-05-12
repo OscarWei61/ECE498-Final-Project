@@ -4,7 +4,7 @@ from typing import List
 from Embedding import retrieve_advices
 import json
 
-openai_client = OpenAI(api_key="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")
+openai_client = OpenAI(api_key="enter your api key")
 
 class TaskType(str, Enum):
     legal_statute_search = "legal_statute_search"
