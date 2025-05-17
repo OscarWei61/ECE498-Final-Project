@@ -1,0 +1,133 @@
+.chat-container {
+  width: 90vw;
+  height: 90vh;
+  min-width: 300px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #343541;
+  margin: auto;
+}
+
+.task-buttons {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #40414f;
+}
+
+.task-btn {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #5a5c6c;
+  border-radius: 4px;
+  background: #343541;
+  color: #e5e5e5;
+  cursor: pointer;
+}
+
+.task-btn.active {
+  background: #4e8cff;
+  border-color: #4e8cff;
+}
+
+.messages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background: #40414f;
+}
+
+.messages .user,
+.messages .bot {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  margin: 0.5rem 0;
+  max-width: 80%;
+  word-break: break-word;
+}
+
+.messages .user {
+  background: #4e8cff;
+  color: #fff;
+  align-self: flex-end;
+}
+
+.messages .bot {
+  background: #444654;
+  color: #e5e5e5;
+  align-self: flex-start;
+}
+
+.messages .loading {
+  font-style: italic;
+  color: #a0a0a0;
+}
+
+.input-container {
+  height: 60px;
+  display: flex;
+  border-top: 1px solid #5a5c6c;
+  background: #343541;
+}
+
+.input-container input {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  outline: none;
+  background: #40414f;
+  color: #e5e5e5;
+  border-radius: 0 0 0 8px;
+}
+
+.input-container button {
+  padding: 0 1rem;
+  border: none;
+  background: #4e8cff;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 0 0 8px 0;
+}
+
+.input-container button:disabled {
+  background: #6c88d1;
+  cursor: not-allowed;
+}
+.task-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #40414f;
+}
+
+/* 按鈕樣式不變 */
+.task-btn {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #5a5c6c;
+  border-radius: 4px;
+  background: #343541;
+  color: #e5e5e5;
+  cursor: pointer;
+}
+.task-btn.active {
+  background: #4e8cff;
+  border-color: #4e8cff;
+}
+
+.state-select {
+  padding: 0.5rem;
+  background: #343541;
+  color: #e5e5e5;
+  border: 1px solid #5a5c6c;
+  border-radius: 4px;
+}
+.state-select option {
+  background: #40414f;
+  color: #e5e5e5;
+}
