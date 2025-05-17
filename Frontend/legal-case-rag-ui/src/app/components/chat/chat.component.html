@@ -1,0 +1,42 @@
+<p>ECE 498 Project</p>
+<div class="chat-container">
+
+  <div class="messages">
+    <div *ngFor="let msg of messages" [ngClass]="msg.sender">
+      <markdown [data]="msg.content"></markdown>
+    </div>
+    <div *ngIf="loading" class="bot loading">Typing...</div>
+  </div>
+
+  <div class="input-container">
+    <input
+      [(ngModel)]="userInput"
+      (keyup.enter)="sendMessage()"
+      placeholder="Please Enter your Question..." />
+    <button (click)="sendMessage()" [disabled]="loading">Send</button>
+  </div>
+
+  <!-- 把這裡的按鈕組移到 input-container 下面 -->
+  <div class="task-buttons">
+    <button
+      type="button"
+      class="task-btn"
+      [class.active]="isLegalSearch"
+      (click)="isLegalSearch = !isLegalSearch">
+      legal_statute_search
+    </button>
+
+    <button
+      type="button"
+      class="task-btn"
+      [class.active]="isSimilarRetrieval"
+      (click)="isSimilarRetrieval = !isSimilarRetrieval">
+      similar_case_retrieval
+    </button>
+
+    <select [(ngModel)]="selectedState" class="state-select">
+      <option *ngFor="let st of states" [value]="st">{{ st }}</option>
+    </select>
+  </div>
+
+</div>
