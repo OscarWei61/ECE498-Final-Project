@@ -4,7 +4,7 @@ from typing import List
 from Embedding import retrieve_advices
 import json
 
-openai_client = OpenAI(api_key="enter your api key")
+openai_client = OpenAI(api_key="your api key")
 
 class TaskType(str, Enum):
     legal_statute_search = "legal_statute_search"
@@ -22,23 +22,17 @@ def generate_structured_answer(task: List[TaskType], user_question: str):
     if TaskType.similar_case_retrieval in task:
         task_description = "- Retrieve and summarize any similar legal cases that rely on the same or similar legal statutes.\n" + task_description
 
-    structure_guide = "Please structure your answer as follows:\n"
-    section_num = 1
+    # Build Markdown section headers based on selected tasks
+    markdown_sections = []
     if TaskType.legal_statute_search in task:
-        structure_guide += f"{section_num}. **Legal Statutes:** Cite applicable legal provisions.\n"
-        section_num += 1
+        markdown_sections.append("## Legal Statutes")
     if TaskType.similar_case_retrieval in task:
-        structure_guide += f"{section_num}. **Similar Cases:** Identify any cases from the context that relied on the same or similar statutes (e.g., 405 ILCS 5). For each case, provide:\n"
-        structure_guide += "   - Case name and court\n"
-        structure_guide += "   - Key facts of the case\n"
-        structure_guide += "   - What statute was applied\n"
-        structure_guide += "   - How the court reasoned and ruled\n"
-        structure_guide += "   - Why it is relevant to the user's question\n"
-        section_num += 1
-    structure_guide += f"{section_num}. **Legal Analysis:** Relate facts to legal standards.\n"
-    section_num += 1
-    structure_guide += f"{section_num}. **Conclusion:** Summarize your reasoning based on context.\n"
+        markdown_sections.append("## Similar Cases")
+    markdown_sections.append("## Legal Analysis")
+    markdown_sections.append("## Conclusion")
+    section_instruction = "\n".join(markdown_sections)
 
+    # Structure guide for the response
     disclaimer = (
         "Before using the retrieved legal context, first evaluate whether it is relevant to the user's question. "
         "If the context appears unrelated, ignore it."
@@ -49,8 +43,6 @@ def generate_structured_answer(task: List[TaskType], user_question: str):
             Please perform the following tasks:
             {task_description}
 
-            {structure_guide}
-
             Here is the retrieved legal context:
             {context}
 
@@ -58,20 +50,24 @@ def generate_structured_answer(task: List[TaskType], user_question: str):
             {user_question}
 
             {disclaimer}
+            
+            Please write the full answer in **Markdown format** using the following section headers:
+            {section_instruction}
 
-            Answer in JSON format with keys `legal_statutes`, `similar_cases`, `legal_analysis`, and `conclusion`:
+            Start each section with the corresponding Markdown heading (e.g., ## Legal Statutes), and ensure each section is well developed.
+            Use bullet points, bolded statute names, and numbered case lists where appropriate. Do not output JSON. Return only Markdown text.
+
             Each key must be completed using either the retrieved legal context(if it is relevant to the user's question based on your evaluation) or your own legal knowledge.
-
             """
 
     response = openai_client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}]
     )
 
-    try:
-        parsed = json.loads(response.choices[0].message.content.strip())
-    except Exception:
-        parsed = {"raw_answer": response.choices[0].message.content.strip()}
+    parsed = response.choices[0].message.content.strip()
 
     return parsed
+
+
+
